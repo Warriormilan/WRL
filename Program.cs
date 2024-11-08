@@ -1,36 +1,46 @@
 ﻿using System;
+using System.Text;
 
 class Program
 {
     static void Main()
     {
-        Console.Write("Введите значение a: ");
-        double a = Convert.ToDouble(Console.ReadLine());
+        // Ввод числа x в 10-чной системе счисления
+        Console.Write("Введите число x в 10-чной системе счисления: ");
+        int x = int.Parse(Console.ReadLine());
 
-        Console.Write("Введите значение b: ");
-        double b = Convert.ToDouble(Console.ReadLine());
+        // Ввод основания системы счисления q
+        Console.Write("Введите основание системы счисления q (от 2 до 9): ");
+        int q = int.Parse(Console.ReadLine());
 
-        Console.Write("Введите шаг h: ");
-        double h = Convert.ToDouble(Console.ReadLine());
-
-        if (h <= 0 || a >= b)
+        // Проверка корректности введенного основания
+        if (q < 2 || q > 9)
         {
-            Console.WriteLine("Ошибка: Некорректные значения a, b или h.");
+            Console.WriteLine("Ошибка: основание системы счисления должно быть в диапазоне от 2 до 9.");
             return;
         }
 
-        int pointsCount = (int)((b - a) / h) + 1;
+        // Преобразование числа x в систему счисления q
+        string result = ConvertToBase(x, q);
 
-        Console.WriteLine("\n Таблица значений \n");
-        Console.WriteLine($"{"x",-10} {"y(x)",-20}");
-        Console.WriteLine(new string('-', 30));
+        // Вывод результата
+        Console.WriteLine($"Число {x} в {q}-чной системе счисления: {result}");
+    }
 
-        for (double x = a; x <= b; x += h)
+    static string ConvertToBase(int number, int baseSystem)
+    {
+        if (number == 0)
+            return "0";
+
+        StringBuilder sb = new StringBuilder();
+
+        while (number > 0)
         {
-            double y = Math.Cos(x * x) + Math.Sin(x) * Math.Sin(x);
-            Console.WriteLine($"{x,-10:F2} {y,-20:F5}");
+            int remainder = number % baseSystem;
+            sb.Insert(0, remainder);
+            number /= baseSystem;
         }
 
-        Console.WriteLine($"\nКоличество точек в таблице: {pointsCount}");
+        return sb.ToString();
     }
 }
